@@ -1,7 +1,7 @@
 # php-youtube-video-uploader
 Automated batched upload video into youtube, with error handling and logging.
 # Usage
-1. Download it, modify the TODO: in VideoUploader.php
+1. Download it, modify the TODO: in config.yml
 2. Run in terminal , php VideoUploader.php
 3. ???
 4. Profit

@@ -1,0 +1,13 @@
+oauth2_client_id: '' #TODO: UPDATE YOUR CLIENT ID
+oauth2_client_secret: '' #TODO: UPDATE YOUR CLIENT SECRET
+refreshToken: '' #TODO: UPDATE YOUR PROPOSED ACCOUNT REFRESH ID
+privacy_type: 'private' #TODO: UPDATE YOUR UPLOAD VIDEO STATUS (private/public)
+log_path: './logs.txt' #TODO: UPDATE PATH FOR LOG FILE
+uploaded_id_youtube_path: './youtubepath.txt' #TODO: UPDATE PATH FOR UPLOADED VIDEO ID
+
+#TODO: YOU MAY MODIFY YOUR VIDEO INFORMATION HERE
+video_path: './test.mp4' #TODO: UPDATE VIDEO NAME
+video_title: 'test' #TODO: UPDATE VIDEO TITLE
+video_description: 'test' #TODO: UPDATE VIDEO DESCRIPTION
+video_categorie: 27 #TODO: UPDATE VIDEO CATEGORIE
+video_tags: ['KEYWORD0', 'KEYWORD1'] #TODO: UPDATE VIDEO TAGS

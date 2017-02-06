@@ -1,5 +1,8 @@
 <?php
 require_once './vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Youtube Video Auto Uploader
  * The php script is using google oauth2 API v3 and Youtube API v3
@@ -7,6 +10,9 @@ require_once './vendor/autoload.php';
  * A simple and modified examples that upload batches of video youtube by using php script.
  * @author Louis Choi (louis@simplylouis.com)
  */
+
+	$config = Yaml::parse(file_get_contents('./config.yml'));
+
 /**
  *	Upload the video files to youtube
  *	No matter success or fail, the result will be logged in logStatus()
@@ -17,9 +23,12 @@ require_once './vendor/autoload.php';
  *	@param String[] $videoTags		Keyword Tags array
  */
 function uploadYoutube($videoPath, $videoTitle, $videoDescription, $videoCategory, $videoTags) {
-	$OAUTH2_CLIENT_ID = 'XXX.apps.googleusercontent.com'; //TODO: UPDATE YOUR CLIENT ID
-	$OAUTH2_CLIENT_SECRET = 'XXX'; //TODO:UPDATE YOUR CLIENT SECRET
-	$RESULT = array('refreshToken' => 'XXXXXXXXXXXXX'); //TODO:UPDATE YOUR PROPOSED ACCOUNT REFRESH ID
+
+	global $config;
+
+	$OAUTH2_CLIENT_ID = $config['oauth2_client_id']; 
+	$OAUTH2_CLIENT_SECRET = $config['oauth2_client_secret']; 
+	$RESULT = array('refreshToken' =>  $config['refreshToken']); 
 	$client = new Google_Client();
 	$client->setClientId($OAUTH2_CLIENT_ID);
 	$client->setClientSecret($OAUTH2_CLIENT_SECRET);
@@ -39,7 +48,7 @@ function uploadYoutube($videoPath, $videoTitle, $videoDescription, $videoCategor
 			$snippet->setTags($$videoTags);
 			$snippet->setCategoryId($videoCategory);
 			$status = new Google_Service_YouTube_VideoStatus();
-			$status->privacyStatus = "private"; //TODO: UPDATE YOUR UPLOAD VIDEO STATUS , (private/public)
+			$status->privacyStatus = $config['privacy_type']; 
 			$video = new Google_Service_YouTube_Video();
 			$video->setSnippet($snippet);
 			$video->setStatus($status);
@@ -85,27 +94,30 @@ function uploadYoutube($videoPath, $videoTitle, $videoDescription, $videoCategor
  *	@param String 	$txt Log string of the input data
  */
 function logStatus($txt) {
+	global $config;
 	echo $txt . "\n";
-	file_put_contents('logs.txt', $txt . PHP_EOL, FILE_APPEND);
+	file_put_contents($config['log_path'], $txt . PHP_EOL, FILE_APPEND);
 }
 /**
  *	Save the Youtube Key Identifier  https://www.youtube.com/watch?v="gkTb9GP9lVI"
  *	@param String 	$id Youtube Key Identifier
  */
 function saveYoutubePath($id) {
-	file_put_contents('youtubepath.txt', $id . PHP_EOL, FILE_APPEND);
+	global $config;
+	file_put_contents($config['uploaded_id_youtube_path'], $id . PHP_EOL, FILE_APPEND);
 }
 /**
  *	Run the upload script
  */
 function run() {
+	global $config;
 	logStatus('Start command');
-	//TODO: YOU MAY MODIFY YOUR VIDEO INFORMATION HERE
-	$videoPath = "1.mp4";
-	$videoTitle = 'VIDEOTITLE';
-	$videoDescription = 'VIDEODESCRIPTION';
-	$videoCategory = 27;
-	$videoTags = array('KEYWORD0', 'KEYWORD1');
+	
+	$videoPath = $config['video_path'];
+	$videoTitle = $config['video_title'];
+	$videoDescription = $config['video_description'];
+	$videoCategory = $config['video_categorie'];
+	$videoTags = $config['video_tags'];
 	uploadYoutube($videoPath, $videoTitle, $videoDescription, $videoCategory, $videoTags);
 
 	logStatus('Successfully uploaded.' . $videoPath);
